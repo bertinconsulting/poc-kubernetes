@@ -1,4 +1,4 @@
-name: CI
+name: CI/CD
 
 on:
   workflow_dispatch:
@@ -7,12 +7,8 @@ on:
     branches:
       - master
 
-  pull_request:
-    branches:
-      - master
-
 jobs:
-  build:
+  build-deploy:
     runs-on: self-hosted
 
     steps:
@@ -30,4 +26,18 @@ jobs:
         run: .\mvnw.cmd clean package
 
       - name: Docker build
-        run: docker build -t poc-kubernetes:${{ github.sha }} .
+        run: docker build -t localhost:5000/poc-kubernetes:${{ github.sha }} .
+
+      - name: Docker push
+        run: docker push localhost:5000/poc-kubernetes:${{ github.sha }}
+
+      - name: Deploy DEV
+        run: >
+          helm upgrade --install poc-dev
+          ./helm/poc-kubernetes
+          -n poc-helm-dev
+          -f ./helm/poc-kubernetes/values-dev.yaml
+          --set app.image.tag=${{ github.sha }}
+          --wait
+          --timeout 2m
+          --atomic
