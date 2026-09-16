@@ -1,6 +1,8 @@
 name: CI
 
 on:
+  workflow_dispatch:
+
   push:
     branches:
       - master
@@ -10,13 +12,10 @@ on:
       - master
 
 jobs:
-
   test:
-
     runs-on: ubuntu-latest
 
     steps:
-
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -27,5 +26,8 @@ jobs:
           java-version: '21'
           cache: maven
 
-      - name: Maven tests
-        run: mvn clean test
+      - name: Maven build
+        run: mvn clean package
+
+      - name: Docker build
+        run: docker build -t poc-kubernetes:${{ github.sha }} .
