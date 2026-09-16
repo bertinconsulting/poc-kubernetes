@@ -2,7 +2,7 @@ app:
   replicaCount: 2
 
   image:
-    tag: "4.0"
+    tag: "4.1"
 
 postgres:
   storage:

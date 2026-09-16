@@ -13,6 +13,6 @@ public class HelloController {
 
     @GetMapping("/version")
     public String version() {
-        return "Version 4.0";
+        return "Version 4.1";
     }
 }
