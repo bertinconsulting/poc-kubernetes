@@ -10,6 +10,6 @@ public class HelloController {
 
     @GetMapping("/hello")
     public String hello() {
-        return "Hello Kubernetes 3.1";
+        throw new RuntimeException("Version cassée !");
     }
 }
