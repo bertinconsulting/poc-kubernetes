@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: poc-kubernetes
+  namespace: poc-dev
+
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: poc-kubernetes
+
+  template:
+    metadata:
+      labels:
+        app: poc-kubernetes
+
+    spec:
+      containers:
+        - name: poc-kubernetes
+          image: localhost:5000/poc-kubernetes:4.0
+          imagePullPolicy: Always
+
+          ports:
+            - containerPort: 8080
+
+          envFrom:
+            - configMapRef:
+                name: poc-config
+            - secretRef:
+                name: poc-secret
+
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
+
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
