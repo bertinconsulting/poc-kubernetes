@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/hello")
 public class HelloController {
 
-    @GetMapping
+    @GetMapping("/hello")
     public String hello() {
-        return "Hello Kubernetes";
+        return "Hello Kubernetes 3.1";
     }
 }

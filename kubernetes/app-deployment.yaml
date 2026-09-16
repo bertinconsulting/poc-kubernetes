@@ -19,8 +19,7 @@ spec:
     spec:
       containers:
         - name: poc-kubernetes
-
-          image: localhost:5000/poc-kubernetes:2.1
+          image: localhost:5000/poc-kubernetes:3.0
           imagePullPolicy: Always
 
           ports:
@@ -32,3 +31,28 @@ spec:
 
             - secretRef:
                 name: poc-secret
+
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+
+            initialDelaySeconds: 5
+            periodSeconds: 5
+
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+
+            initialDelaySeconds: 10
+            periodSeconds: 10
+
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
