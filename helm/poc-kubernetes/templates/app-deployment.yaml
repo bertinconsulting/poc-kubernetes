@@ -34,7 +34,7 @@ spec:
 
           readinessProbe:
             httpGet:
-              path: /actuator/health/readiness
+              path: /actuator/health/readiness-BOOM
               port: {{ .Values.app.service.port }}
             initialDelaySeconds: 5
             periodSeconds: 5
