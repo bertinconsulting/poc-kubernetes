@@ -1,0 +1,18 @@
+app:
+  replicaCount: 4
+
+  image:
+    tag: "4.0"
+
+  resources:
+    requests:
+      memory: 512Mi
+      cpu: 250m
+
+    limits:
+      memory: 1Gi
+      cpu: 1000m
+
+postgres:
+  storage:
+    size: 5Gi

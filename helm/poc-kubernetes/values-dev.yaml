@@ -1,0 +1,9 @@
+app:
+  replicaCount: 2
+
+  image:
+    tag: "4.0"
+
+postgres:
+  storage:
+    size: 1Gi

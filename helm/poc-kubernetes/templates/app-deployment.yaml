@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: poc-kubernetes
+
+spec:
+  replicas: {{ .Values.app.replicaCount }}
+
+  selector:
+    matchLabels:
+      app: poc-kubernetes
+
+  template:
+    metadata:
+      labels:
+        app: poc-kubernetes
+
+    spec:
+      containers:
+        - name: poc-kubernetes
+
+          image: "{{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}"
+
+          imagePullPolicy: {{ .Values.app.image.pullPolicy }}
+
+          ports:
+            - containerPort: {{ .Values.app.service.port }}
+
+          envFrom:
+            - configMapRef:
+                name: poc-config
+            - secretRef:
+                name: poc-secret
+
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: {{ .Values.app.service.port }}
+            initialDelaySeconds: 5
+            periodSeconds: 5
+
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: {{ .Values.app.service.port }}
+            initialDelaySeconds: 10
+            periodSeconds: 10
+
+          resources:
+            requests:
+              memory: {{ .Values.app.resources.requests.memory }}
+              cpu: {{ .Values.app.resources.requests.cpu }}
+
+            limits:
+              memory: {{ .Values.app.resources.limits.memory }}
+              cpu: {{ .Values.app.resources.limits.cpu }}
