@@ -40,4 +40,4 @@ jobs:
           --set app.image.tag=${{ github.sha }}
           --wait
           --timeout 2m
-          --atomic
+          --rollback-on-failure

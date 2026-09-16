@@ -13,6 +13,6 @@ public class HelloController {
 
     @GetMapping("/version")
     public String version() {
-        return "Version CI/CD";
+        return "Version CI/CD : 2.0.0";
     }
 }
