@@ -35,8 +35,8 @@ jobs:
 
   deploy-dev:
     needs: build
-
     runs-on: self-hosted
+    environment: dev
 
     steps:
       - name: Checkout
@@ -51,4 +51,24 @@ jobs:
           --set app.image.tag=${{ github.sha }}
           --wait
           --timeout 2m          
+          --rollback-on-failure
+
+  deploy-prod:
+    needs: deploy-dev
+    runs-on: self-hosted
+    environment: prod
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Deploy PROD
+        run: >
+          helm upgrade --install poc-prod
+          ./helm/poc-kubernetes
+          -n poc-helm-prod
+          -f ./helm/poc-kubernetes/values-prod.yaml
+          --set app.image.tag=${{ github.sha }}
+          --wait
+          --timeout 2m
           --rollback-on-failure
