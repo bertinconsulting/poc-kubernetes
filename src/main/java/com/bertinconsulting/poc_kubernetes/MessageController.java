@@ -1,5 +1,7 @@
 package com.bertinconsulting.poc_kubernetes;
 
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,8 +12,17 @@ public class MessageController {
 
     private final MessageRepository repository;
 
-    public MessageController(MessageRepository repository) {
+    private final Counter messagesCreated;
+
+    public MessageController(
+            MessageRepository repository,
+            MeterRegistry meterRegistry) {
+
         this.repository = repository;
+
+        this.messagesCreated = Counter.builder("messages.created")
+                .description("Number of messages created")
+                .register(meterRegistry);
     }
 
     @GetMapping
@@ -21,6 +32,7 @@ public class MessageController {
 
     @PostMapping
     public Message create(@RequestBody Message message) {
+        messagesCreated.increment();
         return repository.save(message);
     }
 }
