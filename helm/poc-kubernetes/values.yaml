@@ -32,3 +32,9 @@ ingress:
   enabled: true
   className: nginx
   host: poc.local
+
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 50
