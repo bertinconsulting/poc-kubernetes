@@ -1,0 +1,1 @@
+ kubectl port-forward -n poc-helm-dev service/postgres-service 5432:5432
