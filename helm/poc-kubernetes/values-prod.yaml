@@ -1,18 +1,17 @@
 app:
-  replicaCount: 4
-
-  image:
-    tag: "4.0"
-
+  replicaCount: 2
   resources:
     requests:
-      memory: 512Mi
-      cpu: 250m
-
+      memory: 256Mi
+      cpu: 100m
     limits:
-      memory: 1Gi
-      cpu: 1000m
+      memory: 512Mi
+      cpu: 500m
 
 postgres:
   storage:
-    size: 5Gi
+    size: 1Gi
+
+ingress:
+  enabled: true
+  host: poc-prod.local

@@ -7,3 +7,7 @@ app:
 postgres:
   storage:
     size: 1Gi
+
+ingress:
+  enabled: true
+  host: poc.local

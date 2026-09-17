@@ -27,3 +27,8 @@ postgres:
 
   storage:
     size: 1Gi
+
+ingress:
+  enabled: true
+  className: nginx
+  host: poc.local
